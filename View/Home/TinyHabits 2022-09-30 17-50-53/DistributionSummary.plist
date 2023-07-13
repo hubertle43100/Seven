@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>TinyHabits.ipa</key>
+	<array>
+		<dict>
+			<key>architectures</key>
+			<array>
+				<string>arm64</string>
+			</array>
+			<key>bitcode</key>
+			<true/>
+			<key>buildNumber</key>
+			<string>10</string>
+			<key>certificate</key>
+			<dict>
+				<key>SHA1</key>
+				<string>CF0F1E70D1E8F20D46EEB4CA0ED25385D6D46A53</string>
+				<key>dateExpires</key>
+				<string>8/15/23</string>
+				<key>type</key>
+				<string>Cloud Managed Apple Distribution</string>
+			</dict>
+			<key>entitlements</key>
+			<dict>
+				<key>application-identifier</key>
+				<string>42VXZMD96K.com.hubertle.TinyHabits</string>
+				<key>beta-reports-active</key>
+				<true/>
+				<key>com.apple.developer.in-app-payments</key>
+				<array>
+					<string>merchant.com.hubertle.TinyHabits</string>
+				</array>
+				<key>com.apple.developer.team-identifier</key>
+				<string>42VXZMD96K</string>
+				<key>get-task-allow</key>
+				<false/>
+			</dict>
+			<key>name</key>
+			<string>TinyHabits.app</string>
+			<key>profile</key>
+			<dict>
+				<key>UUID</key>
+				<string>4c3bb879-0280-4882-9688-7337eda8bc47</string>
+				<key>dateExpires</key>
+				<string>8/15/23</string>
+				<key>name</key>
+				<string>iOS Team Store Provisioning Profile: com.hubertle.TinyHabits</string>
+			</dict>
+			<key>symbols</key>
+			<true/>
+			<key>team</key>
+			<dict>
+				<key>id</key>
+				<string>42VXZMD96K</string>
+				<key>name</key>
+				<string>Hubert Le</string>
+			</dict>
+			<key>versionNumber</key>
+			<string>1.0</string>
+		</dict>
+	</array>
+</dict>
+</plist>
