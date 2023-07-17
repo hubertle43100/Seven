@@ -6,11 +6,11 @@
 //
 
 import SwiftUI
+import EventKit
 
 struct ContentView: View {
     
     //@StateObject var vm = CoreDataViewModel()
-    
     var body: some View {
         ZStack {
             VStack {
@@ -21,53 +21,10 @@ struct ContentView: View {
                 Spacer()
             }
             
+            
+            dateHeader()
             ExtractedView()
-            VStack {
-                ZStack {
-                    Rectangle()
-                        .foregroundColor(.clear)
-                        .frame(width: 160, height: 96)
-                        .background(Color(red: 0.85, green: 0.85, blue: 0.85))
-                        .cornerRadius(5)
-                        .offset(x:45)
-                    HStack {
-                        Text("Get\nStarted").font(.system(size: 24, weight: .medium, design: .default))
-                            .rotationEffect(Angle(degrees: -90)).opacity(0.3)
-                        Button("HERE") {
-                            print("Button tapped!")
-                        }.font(.system(size: 50, weight: .semibold, design: .default))
-                            .foregroundColor(.black)
-                        
-                    }
-                }.offset(x:-20).padding()
-                Divider().frame(width: 70).overlay(.gray).rotationEffect(Angle(degrees: -90)).padding(50)
-                HStack {
-                    Image("Ellipse 2")
-                        .frame(width: 15, height: 15).offset(x:15,y: -12)
-                    Text("Create a task for the next few days or even the whole week").frame(width: 262, height: 56, alignment: .center)
-                }
-            }.offset(y:100)
         }
-        //        TabView {
-        //            HabitMain(model: vm)
-        //                .tabItem {
-        //                    VStack {
-        //                        Text("Habits")
-        //                        Image(systemName: "pencil.circle.fill")
-        //                            .renderingMode(.template)
-        //                    }
-        //
-        //                }
-        //
-        //            SettingMain()
-        //                .tabItem {
-        //                    VStack {
-        //                        Text("Setting")
-        //                        Image(systemName: "line.horizontal.3.decrease.circle.fill")
-        //                            .renderingMode(.template)
-        //                    }
-        //                }
-        //        }.accentColor(Color.black)
     }
 }
 
@@ -77,11 +34,9 @@ struct ContentView_Previews: PreviewProvider {
     }
 }
 
-
-
-
-struct ExtractedView: View {
+struct dateHeader: View {
     let dateFormatter = DateFormatter()
+    @State var Num: Int = -106
     var body: some View {
         VStack {
             ZStack {
@@ -105,26 +60,28 @@ struct ExtractedView: View {
             ZStack {
                 Rectangle()
                     .foregroundColor(.clear)
-                    .frame(width: 40, height: 72)
+                    .frame(width: 30, height: 72)
                     .background(.white)
                     .cornerRadius(5)
-                    .offset(x:-101)
+                    .offset(x:CGFloat(Num))
                 HStack {
                     
                     Text("Tiny Habits").font(.system(size: 12, weight: .semibold, design: .default))
                         .rotationEffect(Angle(degrees: -90)).opacity(0.3).offset(x: 30)
                     Divider().frame(height: 50).overlay(.gray)
-                    VStack {
-                        HStack(spacing: 29) {
-                                   ForEach(0..<7) { index in
-                                       Text("\(self.getDayAbbreviation(for: index))").font(.system(size: 20, weight: .medium, design: .default))
-                                   }
-                        }.offset(x:10)
-                        HStack(spacing: 20) {
-                            ForEach(0..<7) { index in
-                                Text("\(self.getDate(for: index))").font(.system(size: 18, weight: .medium, design: .default))
+                    HStack(spacing: 20) {
+                        ForEach(0..<7) { index in
+                            VStack{
+                                Group {
+                                    Text("\(self.getDayAbbreviation(for: index))")
+                                    Button("\(self.getDate(for: index))") {
+                                        self.Num = -106 + 40 * index
+                                        dayChoosen()
+                                    }
+                                }.font(.system(size: 18, weight: .semibold, design: .default))
+                                    .foregroundColor(.black)
                             }
-                        }.offset(x:5)
+                        }
                     }
                     Spacer()
                 }
@@ -133,16 +90,80 @@ struct ExtractedView: View {
         }
     }
     func getDayAbbreviation(for index: Int) -> String {
-           let calendar = Calendar.current
-           let startOfDay = calendar.startOfDay(for: Date())
-           let adjustedIndex = (index + calendar.component(.weekday, from: startOfDay) - 1) % 7
-           let weekdays = calendar.veryShortWeekdaySymbols
-           return weekdays[adjustedIndex]
-       }
+        let calendar = Calendar.current
+        let startOfDay = calendar.startOfDay(for: Date())
+        let adjustedIndex = (index + calendar.component(.weekday, from: startOfDay) - 1) % 7
+        let weekdays = calendar.veryShortWeekdaySymbols
+        return weekdays[adjustedIndex]
+    }
     func getDate(for index: Int) -> String {
         let date = Calendar.current.date(byAdding: .day, value: index, to: Date()) ?? Date()
         dateFormatter.dateFormat = "dd" // Format to get the numeric date (e.g., 01, 02, 03)
         return dateFormatter.string(from: date)
     }
-    
+    func dayChoosen(){
+        print("DayChoosen: \(Num)")
+        Num = Num
+    }
+}
+
+struct ExtractedView: View {
+    @State private var showSecondView: Bool = false
+    var body: some View {
+        VStack {
+            ZStack {
+                Rectangle()
+                    .foregroundColor(.clear)
+                    .frame(width: 160, height: 96)
+                    .background(Color(red: 0.85, green: 0.85, blue: 0.85))
+                    .cornerRadius(5)
+                    .offset(x:45)
+                HStack {
+                    Text("Get\nStarted").font(.system(size: 24, weight: .medium, design: .default))
+                        .rotationEffect(Angle(degrees: -90)).opacity(0.3)
+                    Button("HERE") {
+                        showSecondView = true
+                    }.font(.system(size: 50, weight: .semibold, design: .default))
+                        .foregroundColor(.black)
+                        .sheet(isPresented: $showSecondView) {
+                            // Present the second view as a sheet
+                            generateGoals()
+                        }
+                }
+            }.offset(x:-20).padding()
+            Divider().frame(width: 70).overlay(.gray).rotationEffect(Angle(degrees: -90)).padding(50)
+            HStack {
+                Image("Ellipse 2")
+                    .frame(width: 15, height: 15).offset(x:15,y: -12)
+                Text("Create a task for the next few days or even the whole week").frame(width: 262, height: 56, alignment: .center)
+            }.foregroundColor(.black)
+        }.offset(y:100)
+    }
+}
+
+extension ContentView {
+    func requestCalendarAccess() {
+        let eventStore = EKEventStore()
+        
+        switch EKEventStore.authorizationStatus(for: .event) {
+        case .authorized:
+            print("Calendar access already authorized.")
+            // You can proceed to add events to the calendar here.
+        case .denied:
+            print("Calendar access denied.")
+        case .notDetermined:
+            eventStore.requestAccess(to: .event) { granted, error in
+                if granted {
+                    print("Calendar access granted.")
+                    // You can proceed to add events to the calendar here.
+                } else {
+                    print("Calendar access denied.")
+                }
+            }
+        case .restricted:
+            print("Calendar access restricted.")
+        @unknown default:
+            print("Unknown authorization status.")
+        }
+    }
 }

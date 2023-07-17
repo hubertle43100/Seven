@@ -28,5 +28,7 @@
 		<key>UIImageName</key>
 		<string></string>
 	</dict>
+	<key>NSCalendarsUsageDescription</key>
+	<string>This app is just dating the days for your goals</string>
 </dict>
 </plist>
