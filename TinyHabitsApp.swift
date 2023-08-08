@@ -12,6 +12,7 @@ struct TinyHabitsApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
+            //TaskTrackerView()
         }
     }
 }
